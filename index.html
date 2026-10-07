@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="ru">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -8,12 +8,12 @@
 </head>
 <body>
   <div class="container">
-
-    <div class="envelope-wrap" onclick="toggleEnvelope(this)">
+    <div class="envelope-wrap" id="envelopeWrap">
       <div class="envelope">
         <div class="body">
           <div class="flap"></div>
-          <div class="paper">
+          <div class="dark-overlay"></div>
+          <div class="paper" id="paper">
             <p><strong>Сәлем, жүрегім,</strong></p>
 
             <p>Сегодня исполняется 7 месяцев, как мы вместе. Семь месяцев, которые пролетели с невероятной скоростью. С момента нашей встречи моя любовь к тебе только растет. В первый же день я говорила себе, что мое сердце полностью принадлежит тебе, думая, что любить тебя еще сильнее просто невозможно. И все же оно бросает вызов законам физики: с каждым днем оно становится все больше, чтобы вместить ту огромную любовь, которую я к тебе испытываю</p>
@@ -42,13 +42,35 @@
   <div class="hearts" id="hearts"></div>
 <script>
   
-  function toggleEnvelope(el){
-    el.classList.toggle('open');
-  }
+  const envelopeWrap = document.querySelector('.envelope-wrap');
+  const paper = document.querySelector('.paper');
+  window.toggleEnvelope = function() {};
+
+  envelopeWrap.addEventListener('click', function(e) 
+  {
+    if (paper.contains(e.target))
+    {
+      return;
+    }
+    envelopeWrap.classList.toggle('open');
+    e.stopPropagation(); 
+  });
+
+  document.addEventListener('click', function(e) 
+  {
+    if (envelopeWrap.classList.contains('open')) 
+    {
+      if (!paper.contains(e.target)) 
+      {
+        envelopeWrap.classList.remove('open');
+      }
+    }
+  });
 
   const heartsContainer = document.getElementById('hearts');
   const heartEmojis = ['⭐', '✨', '🤍', '💛'];
-  function spawnHeart(){
+  function spawnHeart()
+  {
     const h = document.createElement('div');
     h.className = 'heart';
     h.textContent = heartEmojis[Math.floor(Math.random()*heartEmojis.length)];
